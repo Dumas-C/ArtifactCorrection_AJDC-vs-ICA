@@ -20,7 +20,7 @@ Ocular artifacts can significantly impact electroencephalography (EEG) signals, 
 
 ## Code
 This repository contains the code used to run the analysis performed and to plot the figures.
-Analysis was performed with the following Python version: 3.12.4. In 'requirements.txt' a list of all the Python dependencies is proposed to plot the connectomes.
+Computation and figures were performed with the following Python version: 3.12.4. In 'requirements.txt' a list of all the Python dependencies is proposed.
 Statistical analysis was performed with following R version: 4.4.1.
 
 
