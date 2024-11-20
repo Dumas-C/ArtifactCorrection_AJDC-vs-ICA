@@ -1,0 +1,201 @@
+---
+title: "Statistical Analysis - AJDC VS ICA"
+---
+
+```{r}
+#TODO: update working directory !
+setwd("C:/Users/cassandra.dumas/OneDrive - ICM/Documents/PHD/Dev/BioSignals_2025/Scripts/Statistics")
+```
+
+# Evoked Potential analysis
+```{r}
+# Load the CSV file containing EP amplitudes
+df_ep_amplitudes <- read.csv('df_EP_amplitudes.csv')
+
+# Extract amplitude columns for RAW, ICA, and AJDC methods
+amp_RAW <- df_ep_amplitudes$Amplitude_RAW
+amp_ICA <- df_ep_amplitudes$Amplitude_ICA
+amp_AJDC <- df_ep_amplitudes$Amplitude_AJDC
+
+# Calculate amplitude reduction by comparing RAW with AJDC and ICA
+reduction_AJDC <- amp_RAW - amp_AJDC
+reduction_ICA <- amp_RAW - amp_ICA
+
+# Compute the mean and standard deviation of the reductions
+avg_reduction_AJDC <- mean(reduction_AJDC, na.rm = TRUE) 
+std_reduction_AJDC <- sd(reduction_AJDC, na.rm = TRUE)    
+avg_reduction_ICA <- mean(reduction_ICA, na.rm = TRUE)   
+std_reduction_ICA <- sd(reduction_ICA, na.rm = TRUE)      
+
+# Display the results
+cat(sprintf("Average amplitude reduction (RAW vs AJDC): %.2f ± %.2f\n", avg_reduction_AJDC, std_reduction_AJDC))
+cat(sprintf("Average amplitude reduction (RAW vs ICA): %.2f ± %.2f\n", avg_reduction_ICA, std_reduction_ICA))
+
+```
+
+# PSD analysis
+```{r}
+# Load PSD data for both ICA and AJDC methods from CSV files
+df_psd_ica <- read.csv('df_PSD_ICA.csv')
+df_psd_ajdc <- read.csv('df_PSD_AJDC.csv')
+
+# Merge the two datasets by Subject, Electrode, and Frequency, adding suffixes to differentiate columns
+merged_data <- merge(df_psd_ica, df_psd_ajdc, by = c("Subject", "Electrode", "Frequency"), suffixes = c("_ICA", "_AJDC"))
+
+# Initialize dataframes to store the results of T-tests and Wilcoxon tests
+result_t_test <- data.frame(Electrode = integer(), Frequence = integer(), t_value = numeric(), df = integer(), p_value = numeric())
+result_wilcoxon <- data.frame(Electrode = integer(), Frequence = integer(), V = numeric(), p_value = numeric())
+
+# Loop through unique electrodes and frequencies to perform paired tests
+for (e in unique(merged_data$Electrode)) {
+  for (f in unique(merged_data$Frequency)) {
+    # Subset the data for the current electrode and frequency
+    subset_data <- subset(merged_data, Electrode == e & Frequency == f)
+    
+    # Compute the differences between PSD values for ICA and AJDC
+    subset_data$diff <- subset_data$PSD_ICA - subset_data$PSD_AJDC
+    
+    # Perform a Shapiro-Wilk test to check normality of the differences
+    shapiro_test <- shapiro.test(subset_data$diff)
+    
+    if (shapiro_test$p.value > 0.05) { # If the differences follow a normal distribution
+      # Perform a paired T-test and store t-value, degrees of freedom, and p-value
+      t_test <- t.test(subset_data$PSD_ICA, subset_data$PSD_AJDC, paired = TRUE)
+      result_t_test <- rbind(result_t_test, data.frame(Electrode = e, Frequence = f, t_value = t_test$statistic, df = t_test$parameter, p_value = t_test$p.value))
+    } 
+    else { # If normality is not satisfied
+      # Perform a Wilcoxon signed-rank test and store V statistic and p-value
+      wilcoxon_test <- wilcox.test(subset_data$PSD_ICA, subset_data$PSD_AJDC, paired = TRUE)
+      result_wilcoxon <- rbind(result_wilcoxon, data.frame(Electrode = e, Frequence = f, V = wilcoxon_test$statistic, p_value = wilcoxon_test$p.value))
+    }
+  }
+}
+
+
+# Apply FDR correction to p-values for both T-tests and Wilcoxon tests
+result_t_test$p_value_fdr <- p.adjust(result_t_test$p_value, method = "fdr")
+result_wilcoxon$p_value_fdr <- p.adjust(result_wilcoxon$p_value, method = "fdr")
+
+# Filter results to display only significant findings after FDR correction
+significant_t_test_results <- subset(result_t_test, p_value_fdr < 0.05)
+significant_wilcoxon_results <- subset(result_wilcoxon, p_value_fdr < 0.05)
+
+print("Significant paired T-test results after FDR correction:")
+print(significant_t_test_results)
+
+print("Significant Wilcoxon test results after FDR correction:")
+print(significant_wilcoxon_results)
+```
+
+# Time-Frequency analysis
+```{r}
+# Load a CSV file containing MITFR (Motor Imagery Time-Frequency) data
+df_MITF <- read.csv('df_MITF.csv')
+
+# Extract the ERD values for RAW, AJDC, and ICA methods into separate vectors
+raw<-df_MITF$RAW
+ajdc<-df_MITF$AJDC
+ica<-df_MITF$ICA
+
+# Perform Shapiro-Wilk normality tests on the differences between methods
+shapiro.test(raw - ajdc)
+shapiro.test(raw - ica)
+shapiro.test(ica - ajdc)
+
+# Perform paired statistical tests between methods
+t_test_raw_ajdc<-t.test(raw, ajdc, paired=TRUE)
+wilcoxon_test_raw_ica<-wilcox.test(raw, ica, paired=TRUE)
+t_test_ica_ajdc<-t.test(ica, ajdc, paired=TRUE)
+
+# Print the results of the statistical tests
+print("T-Test (RAW/AJDC) results:")
+print(t_test_raw_ajdc)
+
+print("Wilcoxon Test (RAW/ICA) results:")
+print(wilcoxon_test_raw_ica)
+
+print("T-Test (ICA/AJDC) results:")
+print(t_test_ica_ajdc)
+
+```
+
+# Neurofeedback Performance analysis
+```{r}
+# Load a CSV file containing neurofeedback performance data
+df_NFperf <- read.csv('df_NFperf.csv')
+
+# Extract RAW and AJDC performance values into separate vectors
+raw<-df_NFperf$RAW
+ajdc<-df_NFperf$AJDC
+
+# Perform a Shapiro-Wilk test to check normality of the differences (RAW - AJDC)
+shapiro.test(raw - ajdc)
+
+# Perform a Wilcoxon signed-rank test to compare RAW and AJDC performance values
+wilcoxon_test<-wilcox.test(raw, ajdc, paired=TRUE)
+
+# Print the results of the Wilcoxon test
+print("Wilcoxon test results:")
+print(wilcoxon_test)
+```
+
+# SNR analysis
+```{r}
+# Load the SNR dataset
+df_SNR <- read.csv('df_SNR.csv')
+
+# Replace RelativeTime 4 with 6 for Subject "sub-S004"
+df_SNR$RelativeTime[df_SNR$Subject == "sub-S004" & df_SNR$RelativeTime == 4] <- 6
+# Replace RelativeTime 5 with 6 for Subject "sub-S016"
+df_SNR$RelativeTime[df_SNR$Subject == "sub-S016" & df_SNR$RelativeTime == 5] <- 6
+
+# Initialize dataframes to store the results of T-tests and Wilcoxon tests
+result_t_test <- data.frame(Electrode = integer(), t_value = numeric(), df = integer(), p_value = numeric())
+result_wilcoxon <- data.frame(Electrode = integer(), V = numeric(), p_value = numeric())
+
+# Loop through each electrode to perform paired T-tests or Wilcoxon tests
+for (e in unique(df_SNR$Electrode)) {
+  # Subset the data for each electrode and relative times 1 and 6
+  subset_data_time1 <- subset(df_SNR, Electrode == e & RelativeTime == 1)
+  subset_data_time6 <- subset(df_SNR, Electrode == e & RelativeTime == 6)
+  
+  # Check that there is enough data for the tests
+  common_subjects <- intersect(subset_data_time1$Subject, subset_data_time6$Subject)
+  subset_data_time1 <- subset_data_time1[subset_data_time1$Subject %in% common_subjects, ]
+  subset_data_time6 <- subset_data_time6[subset_data_time6$Subject %in% common_subjects, ]
+  
+  # Calculate the differences in SNR between the two relative times
+  diff_snr <- subset_data_time1$SNR - subset_data_time6$SNR
+  
+  # Perform a Shapiro-Wilk normality test on the differences
+  shapiro_test <- shapiro.test(diff_snr)
+  
+  if (shapiro_test$p.value > 0.05) {
+    # If normality is confirmed, perform a paired T-test and store the results
+    t_test <- t.test(subset_data_time1$SNR, subset_data_time6$SNR, paired = TRUE)
+    result_t_test <- rbind(result_t_test, data.frame(Electrode = e, t_value = t_test$statistic, df = t_test$parameter, p_value = t_test$p.value))
+  } 
+  else {
+    # Otherwise, perform a Wilcoxon signed-rank test and store the results
+    wilcoxon_test <- wilcox.test(subset_data_time1$SNR, subset_data_time6$SNR, paired = TRUE)
+    result_wilcoxon <- rbind(result_wilcoxon, data.frame(Electrode = e, V = wilcoxon_test$statistic, p_value = wilcoxon_test$p.value))
+  }
+}
+
+
+# Apply FDR correction separately for p-values from T-tests and Wilcoxon tests
+result_t_test$p_value_fdr <- p.adjust(result_t_test$p_value, method = "fdr")
+result_wilcoxon$p_value_fdr <- p.adjust(result_wilcoxon$p_value, method = "fdr")
+
+# Filter and display only the significant results for each type of test
+significant_t_test_results <- subset(result_t_test, p_value_fdr < 0.05)
+significant_wilcoxon_results <- subset(result_wilcoxon, p_value_fdr < 0.05)
+
+print("Significant paired T-test results after FDR correction:")
+print(significant_t_test_results)
+
+print("Significant Wilcoxon test results after FDR correction:")
+print(significant_wilcoxon_results)
+
+```
+
