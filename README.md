@@ -31,6 +31,8 @@ Statistical analysis was performed with following R version: 4.4.1.
 ### Figure 1a - Blink Evoked Potential
 ![Fig. 1a](./Figures/Fig_1a.jpeg)
 
+* <p align="justify"> Blink EPs for the conditions: RAW (left), AJDC-corrected (centre), ICA-corrected (right) signals. The grand average of the EPs across subjects is presented. At the top of each plot, topographies represent the spatial distribution of the blink EPs at t = 0 s corresponding to the blink peak. The inset boxes zoom in on the corrected EPs for better visualization of the differences between methods. Vertical axis: amplitude (µV); horizontal axis: time (s). </p> *
+
 ### Figure 1b - Power Spectra on blink Evoked Potential
 ![Fig. 1b](./Figures/Fig_1b.jpeg)
 
@@ -42,5 +44,3 @@ Statistical analysis was performed with following R version: 4.4.1.
 
 ### Figure 4 - Comparison of Signal-to-Noise Ratio between first and last neurofeedback runs
 ![Fig. 4](./Figures/Fig_4.jpeg)
-
-**
