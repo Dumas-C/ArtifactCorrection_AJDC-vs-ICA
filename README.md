@@ -43,7 +43,7 @@ Statistical analysis was performed with following R version: 4.4.1.
 **
 
 ### Figure 3 - 
-![Fig. 3](./Figures/Fig_3.jpeg)
+![Fig. 3](./Figures/Fig_3.png)
 
 **
 
