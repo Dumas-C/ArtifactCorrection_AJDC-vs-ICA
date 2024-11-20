@@ -1,39 +1,27 @@
-# Measuring Neuronal Avalanches to inform Brain-Computer Interfaces
+# Automatic Ocular Artifact Correction in Electroencephalography for Neurofeedback
 
 ---
 This repository contains the code and supporting documents associated with the following manuscript:
 
-M.-C. Corsi*, P. Sorrentino*, D. Schwartz, N. George, L. Hugueville, A. E. Kahn, S. Dupont, D. S. Bassett, V. Jirsa, F. De Vico Fallani (2023). Measuring Neuronal Avalanches to inform Brain-Computer Interfaces. iScience. https://doi.org/10.1016/j.isci.2023.108734
-
-
-*These authors contributed equally to this work.
+C. Dumas, M.-C. Corsi, C. Dussard, F. Grosselin, N. George (2025). Automatic Ocular Artifact Correction in Electroencephalography for Neurofeedback. 
  
 ---
 ## Authors:
+* Cassandra Dumas, Sorbonne Université, Institut du Cerveau
 * [Marie-Constance Corsi](https://marieconstance-corsi.netlify.app), Sorbonne Université, Institut du Cerveau
-* [Pierpaolo Sorrentino](https://scholar.google.nl/citations?user=T1k8qBsAAAAJ&hl=en), Institut de Neuroscience des Systèmes, Aix-Marseille University
-* Denis Schwartz, CERMEP, Lyon
+* Claire Dussard, Sorbonne Université, Institut du Cerveau
+* Fanny Grosselin, Sorbonne Université, Institut du Cerveau
 * Nathalie George, Sorbonne Université, Institut du Cerveau
-* Leonardo Gollo, Monash University
-* Sylvain Chevallier, LISN-CNRS, Université Paris-Saclay
-* Laurent Hugueville, Sorbonne Université, Institut du Cerveau
-* Ari E. Kahn, University of Pennsylvania, Philadelphia
-* Sophie Dupont, Sorbonne Université, Institut du Cerveau
-* Danielle S. Bassett, University of Pennsylvania, Philadelphia
-* Viktor Jirsa, Institut de Neuroscience des Systèmes, Aix-Marseille University
-* Fabrizio De Vico Fallani, Sorbonne Université, Institut du Cerveau
 
 
 ---
 ## Abstract
-Large-scale interactions among multiple brain regions manifest as bursts of activations called neuronal avalanches, which reconfigure according to the task at hand and, hence, might constitute natural candidates to design brain-computer interfaces (BCI). To test this hypothesis, we used source-reconstructed magneto/electroencephalography, during resting state and a motor imagery task performed within a BCI protocol. To track the probability that an avalanche would spread across any two regions we built an avalanche transition matrix (ATM) and demonstrated that the edges whose transition probabilities significantly differed between conditions hinged selectively on premotor regions in all subjects. Furthermore, we showed that the topology of the ATMs allows task-decoding above the current gold standard. Hence, our results suggest that Neuronal Avalanches might capture interpretable differences between tasks that can be used to inform brain-computer interfaces.
-
+Ocular artifacts can significantly impact electroencephalography (EEG) signals, potentially compromising the performance of neurofeedback (NF) and brain-computer interfaces (BCI) based on EEG. This study investigates if the Approximate Joint Diagonalization of Fourier Cospectra (AJDC) method can effectively correct blink-related artifacts and preserve relevant neurophysiological signatures in a pseudo-online context. AJDC is a frequency-domain Blind Source Separation (BSS) technique, which uses cospectral analysis to isolate and attenuate blink artifacts. Using EEG data from 21 participants recorded during a NF motor imagery (MI) task, we compared AJDC with Independent Component Analysis (ICA), a widely used method for EEG denoising. We assessed the quality of blink artifact correction, the preservation of MI-related EEG signatures, and the influence of AJDC correction on the NF performance indicator. We show that AJDC effectively attenuates blink artifacts without distorting MI-related beta band signatures and with preservation of NF performance. AJDC was calibrated once on initial EEG data. We therefore assessed AJDC correction quality over time, showing some decrease. This suggests that periodic recalibration may benefit long EEG recording. This study highlights AJDC as a promising real-time solution for artifact management in NF, with the potential to provide consistent EEG quality and to enhance NF reliability.
 
 ## Code
 This repository contains the code used to run the analysis performed and to plot the figures.
-Analysis was performed with the following Matlab version: 9.10.0.1649659 (R2021a) Update 1.
-For a complete list of the Matlab packages used for the analysis, please refer to the 'Start_SessionMatlab.m' file.
-In 'requirements.txt' a list of all the Python dependencies is proposed to plot the connectomes.
+Analysis was performed with the following Python version: 3.12.4. In 'requirements.txt' a list of all the Python dependencies is proposed to plot the connectomes.
+Statistical analysis was performed with following R version: 4.4.1.
 
 
 ---
