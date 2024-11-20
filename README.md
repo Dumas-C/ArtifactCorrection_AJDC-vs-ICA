@@ -7,9 +7,9 @@ C. Dumas, M.-C. Corsi, C. Dussard, F. Grosselin, N. George (2025). Automatic Ocu
  
 ---
 ## Authors:
-* Cassandra Dumas, Sorbonne Université, Institut du Cerveau
-* [Marie-Constance Corsi](https://marieconstance-corsi.netlify.app), Sorbonne Université, Institut du Cerveau
-* Claire Dussard, Sorbonne Université, Institut du Cerveau
+* Cassandra Dumas, Sorbonne Université, Institut du Cerveau (alias @Dumas-C)
+* [Marie-Constance Corsi](https://marieconstance-corsi.netlify.app), Sorbonne Université, Institut du Cerveau (alias @mccorsi)
+* Claire Dussard, Sorbonne Université, Institut du Cerveau (alias @cdussard)
 * Fanny Grosselin, Sorbonne Université, Institut du Cerveau
 * Nathalie George, Sorbonne Université, Institut du Cerveau
 
