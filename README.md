@@ -10,8 +10,8 @@ C. Dumas, M.-C. Corsi, C. Dussard, F. Grosselin, N. George (2025). Automatic Ocu
 * [Cassandra Dumas](https://www.linkedin.com/in/cassandra-dumas-a002a2153/), PHD Student, Sorbonne Université, Institut du Cerveau (_alias_ [@Dumas-C](https://github.com/Dumas-C))
 * [Marie-Constance Corsi](https://marieconstance-corsi.netlify.app), Inria Research Scientist, Sorbonne Université, Institut du Cerveau (_alias_ [@mccorsi](https://github.com/mccorsi))
 * [Claire Dussard](https://www.linkedin.com/in/claire-dussard-92469a256/), PHD Student, Sorbonne Université, Institut du Cerveau (_alias_ [@cdussard](https://github.com/cdussard))
-* [Fanny Grosselin](https://www.linkedin.com/in/fanny-grosselin/), Research Engineer, Sorbonne Université, Institut du Cerveau
-* [Nathalie George](https://www.linkedin.com/in/nathalie-george-406a09167/), CNRS Research Director, Sorbonne Université, Institut du Cerveau
+* [Fanny Grosselin](https://www.linkedin.com/in/fanny-grosselin/), Research Engineer, Sorbonne Université, CENIR, Centre MEG-EEG, Institut du Cerveau
+* [Nathalie George](https://www.linkedin.com/in/nathalie-george-406a09167/), CNRS Research Director, Sorbonne Université, CENIR, Centre MEG-EEG, Institut du Cerveau
 
 ---
 ## Abstract
