@@ -30,13 +30,24 @@ Statistical analysis was performed with following R version: 4.4.1.
 ### Figure 1a - 
 ![Fig. 1a](./Figures/Fig_1a.jpeg)
 
-*A. Subject-level analysis. B. Group-level analysis. C. Correlation analysis.*
+**
 
 ### Figure 1b - 
 ![Fig. 1b](./Figures/Fig_1b.jpeg)
 
-*A. Subject-level analysis. B. Group-level analysis. C. Correlation analysis.*
+**
 
+### Figure 2 - 
+![Fig. 2](./Figures/Fig_2.jpeg)
 
+**
 
+### Figure 3 - 
+![Fig. 3](./Figures/Fig_3.jpeg)
 
+**
+
+### Figure 4 - 
+![Fig. 4](./Figures/Fig_4.jpeg)
+
+**
