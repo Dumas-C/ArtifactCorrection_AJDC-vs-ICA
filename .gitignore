@@ -1,2 +1,10 @@
+# csv extensions
 *.csv
+
+# Unity and Openvibe files for NF performance
 /Neurofeedback_Performance
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class

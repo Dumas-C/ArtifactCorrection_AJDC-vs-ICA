@@ -1,0 +1,8 @@
+csv==1.0
+matplotlib==3.8.4
+mne==1.8.0
+numpy==1.26.4
+pandas==1.5.3
+pyriemann==0.6
+re==2.2.1
+scipy==1.13.1
