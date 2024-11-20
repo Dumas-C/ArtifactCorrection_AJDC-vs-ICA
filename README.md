@@ -27,27 +27,19 @@ Statistical analysis was performed with following R version: 4.4.1.
 ---
 ## Figures
 
-### Figure 1a - 
+### Figure 1a - Blink Evoked Potential
 ![Fig. 1a](./Figures/Fig_1a.jpeg)
 
-**
-
-### Figure 1b - 
+### Figure 1b - Power Spectra on blink Evoked Potential
 ![Fig. 1b](./Figures/Fig_1b.jpeg)
 
-**
-
-### Figure 2 - 
+### Figure 2 - Motor Imagery Signature
 ![Fig. 2](./Figures/Fig_2.jpeg)
 
-**
-
-### Figure 3 - 
+### Figure 3 - Comparison of Neurofeedback Performance between RAW and AJDC
 ![Fig. 3](./Figures/Fig_3.png)
 
-**
-
-### Figure 4 - 
+### Figure 4 - Comparison of Signal-to-Noise Ratio between first and last neurofeedback runs
 ![Fig. 4](./Figures/Fig_4.jpeg)
 
 **
