@@ -266,66 +266,85 @@ df.to_csv(f"{file_dir}/Statistics/df_NFperf.csv")
 
 target_suffixes = ['5-2-a', '5-2-b', '6-2-a', '6-2-b', '7-2-a', '7-2-b', '8-2-a', '8-2-b']
 
-# Le mapping des électrodes aux régions du scalp
+# Configuration
+target_suffixes = ['5-2-a', '5-2-b', '6-2-a', '6-2-b', '7-2-a', '7-2-b', '8-2-a', '8-2-b']
+
+# Mapping of electrodes to scalp regions
 region_map = {
     'Fp1': 'Frontal', 'Fp2': 'Frontal', 'F7': 'Frontal', 'F3': 'Frontal', 
     'Fz': 'Frontal', 'F4': 'Frontal', 'F8': 'Frontal',
-    
     'FT10': 'Central', 'T7': 'Central', 'T8': 'Central', 'TP10': 'Central',
     'FC5': 'Central', 'FC1': 'Central', 'FC2': 'Central', 'FC6': 'Central', 
     'C3': 'Central', 'Cz': 'Central', 'C4': 'Central',
     'CP5': 'Central', 'CP1': 'Central', 'CP2': 'Central', 'CP6': 'Central', 
-    
-    'P7': 'Posterior', 'P3': 'Posterior', 'Pz': 'Posterior', 'P4': 'Posterior', 'P8': 'Posterior',
-    'O1': 'Posterior', 'Oz': 'Posterior', 'O2': 'Posterior'
+    'P7': 'Posterior', 'P3': 'Posterior', 'Pz': 'Posterior', 'P4': 'Posterior', 
+    'P8': 'Posterior', 'O1': 'Posterior', 'Oz': 'Posterior', 'O2': 'Posterior'
 }
 
+# Mapping of electrode indices to their names
 electrode_name_map = {
     1: 'Fp1', 2: 'Fp2', 3: 'F7', 4: 'F3', 5: 'Fz', 6: 'F4', 7: 'F8',
     8: 'FT10', 9: 'T7', 10: 'T8', 11: 'TP10',
     12: 'FC5', 13: 'FC1', 14: 'FC2', 15: 'FC6', 16: 'C3', 17: 'Cz', 18: 'C4',
-    19: 'CP5', 20: 'CP1', 21: 'CP2', 22: 'CP6', 23: 'P7', 24: 'P3', 25: 'Pz', 26: 'P4', 27: 'P8',
-    28: 'O1', 29: 'Oz', 30: 'O2'
+    19: 'CP5', 20: 'CP1', 21: 'CP2', 22: 'CP6', 23: 'P7', 24: 'P3', 25: 'Pz', 
+    26: 'P4', 27: 'P8', 28: 'O1', 29: 'Oz', 30: 'O2'
 }
 
-# Initialisation de la liste pour stocker les données
+# Initialize a list to store the data
 data = []
 
+# Iterate over all subjects and load their data
 for sub in sub_list:
-    # Définir le chemin du sujet
-    os.chdir(f"{base_path}/_SNR_/_SNR_SCORES_/{sub}")
+    # Define the subject's directory path
+    subject_path = os.path.join(base_path, "_SNR_", "_SNR_SCORES_", sub)
     
-    # Charger les données de SNR par électrode
-    snr_electrode = np.load("snr_electrode_ajdc.npy", allow_pickle=True).flatten()[0]
-    
-    # Filtrer les clés de snr_electrode en fonction de target_suffixes
-    filtered_elements = sorted([el for el in snr_electrode.keys() if any(suffix in el for suffix in target_suffixes)])
-    
-    # Réordonner les runs selon l'ordre temporel pour ce sujet
-    for idx, key in enumerate(filtered_elements):
-        # Extraire les valeurs de SNR pour chaque électrode dans cette run
-        snr_values = snr_electrode[key]  # Liste de valeurs de SNR pour chaque électrode
-        
-        # Créer une position temporelle relative pour la run
-        time_position = f"T{idx + 1}"  # Crée des labels T1, T2, ..., T6 pour chaque run dans l'ordre
+    # Check if the directory exists
+    if not os.path.isdir(subject_path):
+        print(f"Directory not found: {subject_path}")
+        continue
 
-        # Ajouter chaque électrode avec son SNR au DataFrame
+    # Load the SNR scores file for AJDC
+    try:
+        snr_electrode = np.load(os.path.join(subject_path, "snr_electrode_ajdc.npy"), allow_pickle=True).flatten()[0]
+    except FileNotFoundError:
+        print(f"File not found: {subject_path}/snr_electrode_ajdc.npy")
+        continue
+
+    # Filter keys in `snr_electrode` based on target_suffixes
+    filtered_elements = sorted([key for key in snr_electrode.keys() if any(suffix in key for suffix in target_suffixes)])
+    
+    # Reorder and extract data
+    for idx, key in enumerate(filtered_elements):
+        # Extract SNR values for each electrode in this run
+        snr_values = snr_electrode[key]
+        
+        # Create a relative time position for the run
+        time_position = f"T{idx + 1}"  # Creates labels T1, T2, ..., T6 for each run in order
+
+        # Add each electrode with its SNR to the data list
         for electrode_idx, snr_value in enumerate(snr_values):
             data.append({
                 'Subject': sub,
-                'RelativeTime': idx + 1,  # Pour que T1 soit traité comme 1, T2 comme 2, etc.
-                'Electrode': f'{electrode_idx + 1}',  # Numéro de l'électrode
+                'RelativeTime': idx + 1,  # T1 is treated as 1, T2 as 2, etc.
+                'Electrode': electrode_idx + 1,  # Electrode number (1-indexed)
                 'SNR': snr_value
             })
 
+# Convert the data list to a DataFrame
 df = pd.DataFrame(data)
 
+# Process the DataFrame columns
 df['Subject'] = df['Subject'].astype('category')
-df['RelativeTime'] = df['RelativeTime'].astype(int)  # Pour que RelativeTime soit traité comme une séquence ordonnée
-df['SNR'] = -df['SNR']  # Transformation de SNR en -SNR pour une interprétation positive
-# Convertir 'Electrode' en entier pour correspondre aux clés de electrode_name_map
-df['Electrode'] = df['Electrode'].astype(int)
+df['RelativeTime'] = df['RelativeTime'].astype(int)
+df['SNR'] = -df['SNR']  # Transform SNR to -SNR for a positive interpretation
+df['Electrode'] = df['Electrode'].astype(int)  # Convert to integer
 
+# Add electrode names and regions
 df['Electrode_Name'] = df['Electrode'].map(electrode_name_map)
 df['Region'] = df['Electrode_Name'].map(region_map)
-df.to_csv(f"{file_dir}/Statistics/df_SNR.csv")
+
+# Save the final DataFrame to a CSV file
+output_file = os.path.join(file_dir, "Statistics", "df_SNR.csv")
+os.makedirs(os.path.dirname(output_file), exist_ok=True)  # Create the directory if it does not exist
+df.to_csv(output_file, index=False)
+print(f"Data saved to {output_file}")
