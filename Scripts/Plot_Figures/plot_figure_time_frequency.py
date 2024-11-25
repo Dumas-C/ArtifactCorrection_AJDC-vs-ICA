@@ -45,7 +45,8 @@ for corr in conditions:
         MI_RAW.drop_channels(['FT9', 'TP9'], on_missing='ignore')
         
         # Compute TFR using Morlet wavelet
-        MI.append(MI_RAW.compute_tfr("morlet", freqs=np.arange(0.5, 45, 0.5), n_cycles=np.arange(0.5, 45, 0.5)/2, n_jobs=10, average=True))
+        TFR = MI_RAW.compute_tfr("morlet", freqs=np.arange(0.5, 45, 0.5), n_cycles=np.arange(0.5, 45, 0.5)/2, n_jobs=10, average=True)
+        MI.append(TFR.apply_baseline(baseline=(-3, -1), mode="logratio"))
     
     # Compute the global average of the TFR
     power_data = np.stack([tfr.data for tfr in MI], axis=0)
@@ -131,7 +132,7 @@ for i, condition in enumerate([MI_TFR['RAW'], MI_TFR['AJDC'], MI_TFR['ICA']]):
                           extent=[times[0], times[-1], freqs[0], freqs[-1]], 
                           vmin=-0.50, vmax=0.50, cmap='RdBu_r')
         
-        tfr_channel.plot([0], axes=inset, vlim=(-0.50,0.50), baseline=(-3, -1), mode="logratio", colorbar=False, show=False)
+        tfr_channel.plot([0], axes=inset, vlim=(-0.50,0.50), colorbar=False, show=False)
         
         # Add dashed lines to delimit the moment of interest on each TFR
         inset.axvline(x=0, color='black', linestyle='--', linewidth=1)
