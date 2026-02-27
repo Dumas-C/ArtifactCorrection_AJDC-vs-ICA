@@ -3,7 +3,7 @@
 ---
 This repository contains the code and supporting documents associated with the following manuscript:
 
-Dumas, C., Corsi, M. C., Dussard, C., Grosselin, F., & George, N. (2025). Automatic Ocular Artifact Correction in Electroencephalography for Neurofeedback. Proceedings of BIOSIGNALS 2025 - 18th International Joint Conference on Bio-inspired Systems and Signal Processing (Febr 2025, Porto, Portugal), SCITEPRESS - Science and Technology Publications, vol. 1, pp. 773-783. doi: 10.5220/001326090000391.
+Dumas, C., Corsi, M. C., Dussard, C., Grosselin, F., & George, N. (2025). Automatic Ocular Artifact Correction in Electroencephalography for Neurofeedback. Proceedings of BIOSIGNALS 2025 - 18th International Joint Conference on Bio-inspired Systems and Signal Processing (Febr 2025, Porto, Portugal), SCITEPRESS - Science and Technology Publications, vol. 1, pp. 773-783. doi: [10.5220/001326090000391](https://www.scitepress.org/PublicationsDetail.aspx?ID=IDEWeKHfvts=&t=1).
  
 ---
 ## Authors:
